@@ -10,15 +10,20 @@ const canvasWidth = 1000;
 const backgroundColor = "#EEEEEE";
 const borderWidth = 10;
 
-context.fillStyle = backgroundColor;
-context.fillRect(0, 0, canvasWidth, canvasHeight);
+function clear() {
+  context.fillStyle = backgroundColor;
+  context.fillRect(0, 0, canvasWidth, canvasHeight);
+}
 
 // Point
 
 const pointLength = 50;
 const pointColor = "#FD11FD";
 
-context.fillStyle = pointColor;
-context.fillRect(canvasWidth/2 - pointLength/2, canvasHeight/2 - pointLength/2, pointLength, pointLength);
+function drawPoint(x, y, size) {
+  context.fillStyle = pointColor;
+  context.fillRect(x, y, size, size);
+}
 
-console.log(context);
+clear();
+drawPoint(canvasWidth/2 - pointLength-2, canvasHeight/2 - pointLength-2, pointLength);
