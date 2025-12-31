@@ -9,8 +9,21 @@ const canvasWidth = 1000;
 const backgroundColor = "#EEEEEE";
 const borderWidth = 10;
 
-const pointSize = 20;
+const pointSize = 50;
 const pointColor = "#FD11FD";
+
+const FPS = 60;
+
+function clear() {
+  context.fillStyle = backgroundColor;
+  context.fillRect(0, 0, canvasWidth, canvasHeight);
+}
+
+function drawPoint({x, y, z}) {
+  const size = pointSize * (1/z);
+  context.fillStyle = pointColor;
+  context.fillRect(x-size, y-size, size, size);
+}
 
 function normalizedToCanvas(p) {
   // -1 .. 1 -> 0 .. canvasWidth
@@ -20,15 +33,29 @@ function normalizedToCanvas(p) {
   };
 }
 
-function clear() {
-  context.fillStyle = backgroundColor;
-  context.fillRect(0, 0, canvasWidth, canvasHeight);
+function project({x, y, z}) {
+  return {
+    x: x/z,
+    y: y/z,
+  };
 }
 
-function drawPoint({x, y}) {
-  context.fillStyle = pointColor;
-  context.fillRect(x-pointSize, y-pointSize, pointSize, pointSize);
+let dz = 0;
+function drawFrame(coordinates) {
+  //let direction = 1;
+  //const tolerance = 0.1;
+  //if(coordinates.z >= 10 || coordinates.z <= 2-tolerance) direction *= -1;
+  //coordinates.z += (1 * direction)/FPS;
+  const dt = 1/FPS;
+  dz += dt;
+  clear();
+  const projected = project({x: coordinates.x, y: coordinates.y, z: 1+dz});
+  const normalized = normalizedToCanvas({x: projected.x, y:projected.y});
+  drawPoint({x: normalized.x, y: normalized.y, z: 1+dz});  
+  setTimeout(() => drawFrame(coordinates), 1000/FPS);
 }
 
+var coordinates = {x: 0.0, y: 0.7, z: 10};
 clear();
-drawPoint(normalizedToCanvas({x: 0, y: -0.5}));
+
+setTimeout(() => drawFrame(coordinates), 1000/FPS);
