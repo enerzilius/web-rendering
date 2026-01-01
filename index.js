@@ -30,6 +30,7 @@ function normalizedToCanvas(p) {
   return {
     x: ((p.x+1)/2) * canvasWidth,
     y: (1 - ((p.y+1)/2)) * canvasHeight,
+    z: p.z,
   };
 }
 
@@ -37,6 +38,7 @@ function project({x, y, z}) {
   return {
     x: x/z,
     y: y/z,
+    z: z,
   };
 }
 
@@ -49,9 +51,8 @@ function drawFrame(coordinates) {
   const dt = 1/FPS;
   dz += dt;
   clear();
-  const projected = project({x: coordinates.x, y: coordinates.y, z: 1+dz});
-  const normalized = normalizedToCanvas({x: projected.x, y:projected.y});
-  drawPoint({x: normalized.x, y: normalized.y, z: 1+dz});  
+  drawPoint(normalizedToCanvas(project({x: coordinates.x, y: coordinates.y, z: 1+dz})));
+  drawPoint(normalizedToCanvas(project({x: coordinates.x, y: -coordinates.y, z: 1+dz})));
   setTimeout(() => drawFrame(coordinates), 1000/FPS);
 }
 
