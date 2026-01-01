@@ -42,8 +42,15 @@ function project({x, y, z}) {
   };
 }
 
+const vertices = [
+  {x: 0.0, y: 0.7, z: 1},
+  {x: 0.0, y: -0.7, z: 1},
+  {x: 0.7, y: 0.0, z: 1},
+  {x: -0.7, y: 0.0, z: 1},
+]
+
 let dz = 0;
-function drawFrame(coordinates) {
+function drawFrame() {
   //let direction = 1;
   //const tolerance = 0.1;
   //if(coordinates.z >= 10 || coordinates.z <= 2-tolerance) direction *= -1;
@@ -51,12 +58,10 @@ function drawFrame(coordinates) {
   const dt = 1/FPS;
   dz += dt;
   clear();
-  drawPoint(normalizedToCanvas(project({x: coordinates.x, y: coordinates.y, z: 1+dz})));
-  drawPoint(normalizedToCanvas(project({x: coordinates.x, y: -coordinates.y, z: 1+dz})));
-  setTimeout(() => drawFrame(coordinates), 1000/FPS);
+  for(const v of vertices) {
+    drawPoint(normalizedToCanvas(project({x: v.x, y: v.y, z: dz-1})));
+  }
+  setTimeout(drawFrame, 1000/FPS);
 }
 
-var coordinates = {x: 0.0, y: 0.7, z: 10};
-clear();
-
-setTimeout(() => drawFrame(coordinates), 1000/FPS);
+setTimeout(drawFrame, 1000/FPS);
