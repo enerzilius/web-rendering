@@ -43,23 +43,32 @@ function project({x, y, z}) {
 }
 
 const vertices = [
-  {x: 0.0, y: 0.7, z: 1},
-  {x: 0.0, y: -0.7, z: 1},
-  {x: 0.7, y: 0.0, z: 1},
-  {x: -0.7, y: 0.0, z: 1},
+  {x: 0.5, y: 0.5, z: 1},
+  {x: 0.5, y: -0.5, z: 1},
+  {x: -0.5, y: 0.5, z: 1},
+  {x: -0.5, y: -0.5, z: 1},
+
+  {x: 0.5, y: 0.5, z: -1},
+  {x: 0.5, y: -0.5, z: -1},
+  {x: -0.5, y: 0.5, z: -1},
+  {x: -0.5, y: -0.5, z: -1},
 ]
 
-let dz = 0;
+function translate(v, d) {
+  return { x: v.x + d.x, y: v.y + d.y, z: v.z + d.z };
+}
+
+let d = { x: 0, y: 0, z: 2};
 function drawFrame() {
   //let direction = 1;
   //const tolerance = 0.1;
   //if(coordinates.z >= 10 || coordinates.z <= 2-tolerance) direction *= -1;
   //coordinates.z += (1 * direction)/FPS;
   const dt = 1/FPS;
-  dz += dt;
+  d.z += dt;
   clear();
   for(const v of vertices) {
-    drawPoint(normalizedToCanvas(project({x: v.x, y: v.y, z: dz-1})));
+    drawPoint(normalizedToCanvas(project(translate(v, d))));
   }
   setTimeout(drawFrame, 1000/FPS);
 }
