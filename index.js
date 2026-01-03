@@ -95,10 +95,7 @@ function drawFrame() {
   //d.z += dt;
   clear();
   angle += dt;
-  
-  for(const v of vertices) {
-    drawPoint(normalizedToCanvas(project(translate(rotation_xz(v, angle), d))));
-  }
+
   for(const f of faces) {
     for(let i = 0; i < f.length; i++) {
       const a = vertices[f[i]];
