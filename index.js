@@ -58,17 +58,29 @@ function translate(v, d) {
   return { x: v.x + d.x, y: v.y + d.y, z: v.z + d.z };
 }
 
+function rotation_xz(v, angle) {
+  const cosine = Math.cos(angle);
+  const sine = Math.sin(angle);
+  return {
+    x: v.x*cosine-v.z*sine,
+    y: v.y,
+    z: v.x*sine+v.z*cosine,
+  }
+}
+
 let d = { x: 0, y: 0, z: 2};
+let angle = 0;
 function drawFrame() {
   //let direction = 1;
   //const tolerance = 0.1;
   //if(coordinates.z >= 10 || coordinates.z <= 2-tolerance) direction *= -1;
-  //coordinates.z += (1 * direction)/FPS;
+  //coordinate s.z += (1 * direction)/FPS;
   const dt = 1/FPS;
-  d.z += dt;
+  //d.z += dt;
   clear();
+  angle += dt;
   for(const v of vertices) {
-    drawPoint(normalizedToCanvas(project(translate(v, d))));
+    drawPoint(normalizedToCanvas(project(translate(rotation_xz(v, angle), d))));
   }
   setTimeout(drawFrame, 1000/FPS);
 }
