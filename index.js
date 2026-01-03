@@ -9,7 +9,7 @@ const canvasWidth = 1000;
 const backgroundColor = "#EEEEEE";
 const borderWidth = 10;
 
-const pointSize = 50;
+const pointSize = 20;
 const pointColor = "#FD11FD";
 
 const FPS = 60;
@@ -22,7 +22,16 @@ function clear() {
 function drawPoint({x, y, z}) {
   const size = pointSize * (1/z);
   context.fillStyle = pointColor;
-  context.fillRect(x-size, y-size, size, size);
+  context.fillRect(x-(size/2), y-(size/2), size, size);
+}
+
+function drawLine(point1, point2) {
+  context.lineWidth = 3;
+  context.strokeStyle = pointColor;
+  context.beginPath();
+  context.moveTo(point1.x, point1.y);
+  context.lineTo(point2.x, point2.y);
+  context.stroke();
 }
 
 function normalizedToCanvas(p) {
@@ -43,15 +52,22 @@ function project({x, y, z}) {
 }
 
 const vertices = [
-  {x: 0.5, y: 0.5, z: 1},
-  {x: 0.5, y: -0.5, z: 1},
-  {x: -0.5, y: 0.5, z: 1},
-  {x: -0.5, y: -0.5, z: 1},
+  {x: 0.5, y: 0.5, z: 0.5},
+  {x: -0.5, y: 0.5, z: 0.5},
+  {x: -0.5, y: -0.5, z: 0.5},
+  {x: 0.5, y: -0.5, z: 0.5},
 
-  {x: 0.5, y: 0.5, z: -1},
-  {x: 0.5, y: -0.5, z: -1},
-  {x: -0.5, y: 0.5, z: -1},
-  {x: -0.5, y: -0.5, z: -1},
+  {x: 0.5, y: 0.5, z: -0.5},
+  {x: -0.5, y: 0.5, z: -0.5},
+  {x: -0.5, y: -0.5, z: -0.5},
+  {x: 0.5, y: -0.5, z: -0.5},
+]
+
+const faces = [
+  [0, 1, 2, 3],
+  [4, 5, 6, 7],
+  [0, 4, 7, 3],
+  [1, 5, 6, 2],
 ]
 
 function translate(v, d) {
@@ -79,10 +95,20 @@ function drawFrame() {
   //d.z += dt;
   clear();
   angle += dt;
+  
   for(const v of vertices) {
     drawPoint(normalizedToCanvas(project(translate(rotation_xz(v, angle), d))));
+  }
+  for(const f of faces) {
+    for(let i = 0; i < f.length; i++) {
+      const a = vertices[f[i]];
+      const b = vertices[f[(i+1)%f.length]];
+      const point1 = normalizedToCanvas(project(translate(rotation_xz(a, angle), d)));
+      const point2 = normalizedToCanvas(project(translate(rotation_xz(b, angle), d)));
+      drawLine(point1, point2);
+    }
   }
   setTimeout(drawFrame, 1000/FPS);
 }
 
-setTimeout(drawFrame, 1000/FPS);
+drawFrame();
