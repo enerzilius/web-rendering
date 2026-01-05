@@ -6,15 +6,13 @@ const context = render.getContext("2d");
 // Canvas Attributes
 const canvasHeight = 1000;
 const canvasWidth = 1000;
-const backgroundColor = "#EEEEEE";
-const borderWidth = 10;
 
 const pointSize = 20;
-const pointColor = "#FD11FD";
 
 const FPS = 60;
 
 function clear() {
+  const backgroundColor = backgroundColorInput.value;
   context.fillStyle = backgroundColor;
   context.fillRect(0, 0, canvasWidth, canvasHeight);
 }
@@ -26,7 +24,8 @@ function drawPoint({x, y, z}) {
 }
 
 function drawLine(point1, point2) {
-  context.lineWidth = 3;
+  const pointColor = foregroundColorInput.value;
+  context.lineWidth = 3; 
   context.strokeStyle = pointColor;
   context.beginPath();
   context.moveTo(point1.x, point1.y);

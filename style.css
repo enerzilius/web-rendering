@@ -1,0 +1,22 @@
+body {
+  background-color: #010101;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  color: #FD11FD;
+  font-size: 40px; 
+}
+
+input {
+  margin: 10px;
+}
+
+#inputsBox {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
