@@ -1,11 +1,11 @@
-render.width = 1000;
-render.height = 1000;
-
 const context = render.getContext("2d");
 
 // Canvas Attributes
-const canvasHeight = 1000;
-const canvasWidth = 1000;
+const canvasHeight = 800;
+const canvasWidth = 800;
+
+render.width = canvasWidth;
+render.height = canvasHeight;
 
 const pointSize = 20;
 
