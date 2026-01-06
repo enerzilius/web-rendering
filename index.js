@@ -11,6 +11,10 @@ const pointSize = 20;
 
 const FPS = 60;
 
+function updateStyle(color) {
+  document.documentElement.style.setProperty('--foregroundColor', `${color}`);
+}
+
 function clear() {
   const backgroundColor = backgroundColorInput.value;
   context.fillStyle = backgroundColor;
@@ -25,6 +29,7 @@ function drawPoint({x, y, z}) {
 
 function drawLine(point1, point2) {
   const pointColor = foregroundColorInput.value;
+  updateStyle(pointColor);
   context.lineWidth = 3; 
   context.strokeStyle = pointColor;
   context.beginPath();
