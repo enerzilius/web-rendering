@@ -11,7 +11,7 @@ const pointSize = 20;
 
 const FPS = 60;
 
-const vertices = [
+let vertices = [
   {x: 0.5, y: 0.5, z: 0.5},
   {x: -0.5, y: 0.5, z: 0.5},
   {x: -0.5, y: -0.5, z: 0.5},
@@ -23,7 +23,7 @@ const vertices = [
   {x: 0.5, y: -0.5, z: -0.5},
 ];
 
-const faces = [
+let faces = [
   [0, 1, 2, 3],
   [4, 5, 6, 7],
   [0, 4, 7, 3],
@@ -38,17 +38,36 @@ function updateStyle(color) {
 
 function handleFileInput() {
   const file = fileInput.files[0];
-  if(!file) return; // validar tipo
-  //const reader = new FileReader();
+  const splitName = file.name.split('.');
+  console.log(splitName);
+  if(splitName[splitName.length-1] != "obj") {
+    alert('Only .obj files are accepted!');
+    return;
+  }// validar tipo
   reader.onload = (event) => processFileContent(reader);
-  reader.readAsArrayBuffer(file);
+  reader.readAsText(file);
 }
 
 function processFileContent(reader) {
-  const arrayBuffer = reader.result;
-  const fileSize = arrayBuffer.byteLength;
-  console.log(arrayBuffer);
-  console.log(fileSize);
+  let content = reader.result;
+  content = content.split('#')[1];
+  content = content.split('\r\n\r\n')[2];
+  content = content.split('v');
+  
+  for(const entry of content) {
+    if(entry == '') continue;
+
+    const vertices = entry.split(' ');
+    for(let vertex of vertices) {
+      if(vertex == '') continue;
+      console.log(vertex);
+    }
+  }
+
+}
+
+function normalizeVertices() {
+  return;
 }
 
 function clear() {
