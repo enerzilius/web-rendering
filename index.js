@@ -40,8 +40,11 @@ function handleFileInput() {
   const file = fileInput.files[0];
   if(!file) return; // validar tipo
   //const reader = new FileReader();
-
+  reader.onload = (event) => processFileContent(reader);
   reader.readAsText(file);
+}
+
+function processFileContent(reader) {
   console.log(reader.result);
 }
 
@@ -102,7 +105,6 @@ function rotation_xz(v, angle) {
 let d = { x: 0, y: 0, z: 2};
 let angle = 0;
 function drawFrame() {
-  if(reader.readyState == 2) console.log(reader.result);
   const dt = 1/FPS;
   //d.z += dt;
   clear();
