@@ -11,8 +11,33 @@ const pointSize = 20;
 
 const FPS = 60;
 
+const vertices = [
+  {x: 0.5, y: 0.5, z: 0.5},
+  {x: -0.5, y: 0.5, z: 0.5},
+  {x: -0.5, y: -0.5, z: 0.5},
+  {x: 0.5, y: -0.5, z: 0.5},
+
+  {x: 0.5, y: 0.5, z: -0.5},
+  {x: -0.5, y: 0.5, z: -0.5},
+  {x: -0.5, y: -0.5, z: -0.5},
+  {x: 0.5, y: -0.5, z: -0.5},
+];
+
+const faces = [
+  [0, 1, 2, 3],
+  [4, 5, 6, 7],
+  [0, 4, 7, 3],
+  [1, 5, 6, 2],
+];
+
 function updateStyle(color) {
   document.documentElement.style.setProperty('--foregroundColor', `${color}`);
+}
+
+function handleFileInput() {
+  const file = fileInput.files[0];
+  if(!file) return; // validar tipo
+  console.log("aa");
 }
 
 function clear() {
@@ -55,25 +80,6 @@ function project({x, y, z}) {
   };
 }
 
-const vertices = [
-  {x: 0.5, y: 0.5, z: 0.5},
-  {x: -0.5, y: 0.5, z: 0.5},
-  {x: -0.5, y: -0.5, z: 0.5},
-  {x: 0.5, y: -0.5, z: 0.5},
-
-  {x: 0.5, y: 0.5, z: -0.5},
-  {x: -0.5, y: 0.5, z: -0.5},
-  {x: -0.5, y: -0.5, z: -0.5},
-  {x: 0.5, y: -0.5, z: -0.5},
-]
-
-const faces = [
-  [0, 1, 2, 3],
-  [4, 5, 6, 7],
-  [0, 4, 7, 3],
-  [1, 5, 6, 2],
-]
-
 function translate(v, d) {
   return { x: v.x + d.x, y: v.y + d.y, z: v.z + d.z };
 }
@@ -91,10 +97,6 @@ function rotation_xz(v, angle) {
 let d = { x: 0, y: 0, z: 2};
 let angle = 0;
 function drawFrame() {
-  //let direction = 1;
-  //const tolerance = 0.1;
-  //if(coordinates.z >= 10 || coordinates.z <= 2-tolerance) direction *= -1;
-  //coordinate s.z += (1 * direction)/FPS;
   const dt = 1/FPS;
   //d.z += dt;
   clear();
@@ -112,4 +114,5 @@ function drawFrame() {
   setTimeout(drawFrame, 1000/FPS);
 }
 
+fileInput.addEventListener('change', handleFileInput);
 drawFrame();
