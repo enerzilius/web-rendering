@@ -41,11 +41,14 @@ function handleFileInput() {
   if(!file) return; // validar tipo
   //const reader = new FileReader();
   reader.onload = (event) => processFileContent(reader);
-  reader.readAsText(file);
+  reader.readAsArrayBuffer(file);
 }
 
 function processFileContent(reader) {
-  console.log(reader.result);
+  const arrayBuffer = reader.result;
+  const fileSize = arrayBuffer.byteLength;
+  console.log(arrayBuffer);
+  console.log(fileSize);
 }
 
 function clear() {
