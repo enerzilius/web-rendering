@@ -40,9 +40,15 @@ function handleFileInput() {
   const file = fileInput.files[0];
   if(!file) return; // validar tipo
   //const reader = new FileReader();
+  reader.onload = (event) => processFileContent(reader);
+  reader.readAsArrayBuffer(file);
+}
 
-  reader.readAsText(file);
-  console.log(reader.result);
+function processFileContent(reader) {
+  const arrayBuffer = reader.result;
+  const fileSize = arrayBuffer.byteLength;
+  console.log(arrayBuffer);
+  console.log(fileSize);
 }
 
 function clear() {
@@ -102,7 +108,6 @@ function rotation_xz(v, angle) {
 let d = { x: 0, y: 0, z: 2};
 let angle = 0;
 function drawFrame() {
-  if(reader.readyState == 2) console.log(reader.result);
   const dt = 1/FPS;
   //d.z += dt;
   clear();
