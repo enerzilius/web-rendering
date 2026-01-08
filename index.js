@@ -39,7 +39,7 @@ function updateStyle(color) {
 function handleFileInput() {
   const file = fileInput.files[0];
   const splitName = file.name.split('.');
-  console.log(splitName);
+
   if(splitName[splitName.length-1] != "obj") {
     alert('Only .obj files are accepted!');
     return;
@@ -49,11 +49,23 @@ function handleFileInput() {
 }
 
 function processFileContent(reader) {
-  let content = reader.result;
-  content = content.split('#')[1];
-  content = content.split('\r\n\r\n')[2];
-  content = content.split('v');
+  const content = reader.result;
+  console.log(content);
+  let vertexContent = content.split('#')[1];
+  vertexContent = content.split('\r\n\r\n')[2];
+  vertexContent = content.split('v');
   
+  setVertexBuffer(vertexContent);
+
+
+  //setFacesBuffer(facesContent);
+}
+
+function normalizeVertices(vertexBuffer, max) {
+  return vertexBuffer;
+}
+
+function setVertexBuffer(content) {
   let max = 0.0;
   let vertexBuffer = [];
   for(const entry of content) {
@@ -73,11 +85,11 @@ function processFileContent(reader) {
     }
     vertexBuffer.push(vertex);
   }
-  console.log(vertexBuffer);
-  console.log(max);
+  const normalizedBuffer = normalizeVertices(vertexBuffer, max);
+  console.log(normalizedBuffer);
 }
 
-function normalizeVertices() {
+function setFacesBuffer(content) {
   return;
 }
 
