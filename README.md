@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Rendering 3d objects using HTML Canvas
 
 Based on: https://www.youtube.com/watch?v=qjWkNZ0SXfo
