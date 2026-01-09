@@ -50,11 +50,11 @@ function handleFileInput() {
 
 function processFileContent(reader) {
   const content = reader.result;
-  console.log(content);
+  //console.log(content);
   let vertexContent = content.split('#')[1];
   vertexContent = content.split('\r\n\r\n')[2];
   vertexContent = content.split('v');
-  
+
   setVertexBuffer(vertexContent);
 
 
@@ -75,15 +75,16 @@ function setVertexBuffer(content) {
     let vertex = { x: 0.0, y: 0.0, z: 0.0 };
     for(let i in vertices) {
       if(vertices[i] == '') continue;
-
+      
       if(Math.abs(vertices[i]) > max) max = Math.abs(vertices[i]);
-
+      
       // Os vazios ainda ocupam o primeiro espaço, então tem que começar no 1
       if(i == 1) vertex.x = Number(vertices[i]);
       if(i == 2) vertex.y = Number(vertices[i]);
       if(i == 3) vertex.z = Number(vertices[i]);
     }
-    vertexBuffer.push(vertex);
+
+    if(vertex.x && vertex.y && vertex.z) vertexBuffer.push(vertex);
   }
   const normalizedBuffer = normalizeVertices(vertexBuffer, max);
   console.log(normalizedBuffer);
