@@ -50,48 +50,53 @@ function handleFileInput() {
 
 function processFileContent(reader) {
   const content = reader.result;
-  //console.log(content);
-  let vertexContent = content.split('#')[1];
-  vertexContent = content.split('\r\n\r\n')[2];
-  vertexContent = content.split('v');
+  console.log(content);
+  const lines = content.split("\n");
+  console.log(lines);
 
-  setVertexBuffer(vertexContent);
+  let vertexBuffer = [];
+  let facesBuffer = [];
+  let max = 0.0;
+  for(const line of lines) {
+    if(line[1] != ' ') continue;
+    
+    const splitLine = line.split(' ');
 
+    if(line[0] ==  'v') {
+      const vertex = { x: Number(splitLine[1]), y: Number(splitLine[2]), z: Number(splitLine[3]) };
+      max = getMaxVertex(max, vertex);
+      vertexBuffer.push(vertex);
+    }
 
-  //setFacesBuffer(facesContent);
+    if(line[0] == 'f') {
+      const face = [splitLine[1].split('/')[0]-1, splitLine[2].split('/')[0]-1, splitLine[3].split('/')[0]-1];
+      facesBuffer.push(face);
+    }
+  }
+
+  vertices = normalizeVertices(vertexBuffer, max);
+  //vertices = vertexBuffer;
+  console.log(vertices);
+  faces = facesBuffer;
+  console.log(facesBuffer);
+}
+
+function getMaxVertex(max, vertex) {
+  if(Math.abs(vertex.x) > max) max = Math.abs(vertex.x);
+  if(Math.abs(vertex.y) > max) max = Math.abs(vertex.y);
+  if(Math.abs(vertex.z) > max) max = Math.abs(vertex.z);
+
+  return max;
 }
 
 function normalizeVertices(vertexBuffer, max) {
-  return vertexBuffer;
-}
-
-function setVertexBuffer(content) {
-  let max = 0.0;
-  let vertexBuffer = [];
-  for(const entry of content) {
-    if(entry == '') continue;
-
-    const vertices = entry.split(' ');
-    let vertex = { x: 0.0, y: 0.0, z: 0.0 };
-    for(let i in vertices) {
-      if(vertices[i] == '') continue;
-      
-      if(Math.abs(vertices[i]) > max) max = Math.abs(vertices[i]);
-      
-      // Os vazios ainda ocupam o primeiro espaço, então tem que começar no 1
-      if(i == 1) vertex.x = Number(vertices[i]);
-      if(i == 2) vertex.y = Number(vertices[i]);
-      if(i == 3) vertex.z = Number(vertices[i]);
-    }
-
-    if(vertex.x && vertex.y && vertex.z) vertexBuffer.push(vertex);
+  let normalizedBuffer = [];
+  const sizeMult = 1.5;
+  for(const vertex of vertexBuffer) {
+    const normalized = { x: (vertex.x/max)*sizeMult, y: (vertex.y/max)*sizeMult, z: (vertex.z/max)*sizeMult };
+    normalizedBuffer.push(normalized);
   }
-  const normalizedBuffer = normalizeVertices(vertexBuffer, max);
-  console.log(normalizedBuffer);
-}
-
-function setFacesBuffer(content) {
-  return;
+  return normalizedBuffer;
 }
 
 function clear() {
