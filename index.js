@@ -7,7 +7,7 @@ const canvasWidth = 800;
 render.width = canvasWidth;
 render.height = canvasHeight;
 
-const pointSize = 20;
+const pointSize = 10;
 
 const FPS = 60;
 
@@ -75,10 +75,7 @@ function processFileContent(reader) {
   }
 
   vertices = normalizeVertices(vertexBuffer, max);
-  //vertices = vertexBuffer;
-  console.log(vertices);
   faces = facesBuffer;
-  console.log(facesBuffer);
 }
 
 function getMaxVertex(max, vertex) {
@@ -91,9 +88,10 @@ function getMaxVertex(max, vertex) {
 
 function normalizeVertices(vertexBuffer, max) {
   let normalizedBuffer = [];
-  const sizeMult = 1.5;
+  const zoom = 3;
+  const centralizingOffset = 1.5;
   for(const vertex of vertexBuffer) {
-    const normalized = { x: (vertex.x/max)*sizeMult, y: (vertex.y/max)*sizeMult, z: (vertex.z/max)*sizeMult };
+    const normalized = { x: (vertex.x/max)*zoom, y: (vertex.y/max)*zoom-centralizingOffset, z: (vertex.z/max)*zoom };
     normalizedBuffer.push(normalized);
   }
   return normalizedBuffer;
@@ -114,7 +112,7 @@ function drawPoint({x, y, z}) {
 function drawLine(point1, point2) {
   const pointColor = foregroundColorInput.value;
   updateStyle(pointColor);
-  context.lineWidth = 3; 
+  context.lineWidth = 1; 
   context.strokeStyle = pointColor;
   context.beginPath();
   context.moveTo(point1.x, point1.y);
