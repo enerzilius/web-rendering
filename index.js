@@ -165,6 +165,7 @@ function drawFrame() {
       const b = vertices[f[(i+1)%f.length]];
       const point1 = normalizedToCanvas(project(translate(rotation_xz(a, angle), d)));
       const point2 = normalizedToCanvas(project(translate(rotation_xz(b, angle), d)));
+      if(Math.abs(point1) > 1.0 || Math.abs(point2) > 1.0) continue;
       drawLine(point1, point2);
     }
   }

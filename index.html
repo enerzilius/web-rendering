@@ -3,14 +3,20 @@
   <h1>3D Rendering using HTML Canvas</h1>
   <p id="warning"><i>Only .obj files are supported</i></p>
   <div id="inputsBox">
-    <label for="foregroundColor">Foreground Color:</label>
-    <input type="color" id="foregroundColorInput" name="foregroundColor" value="#86cecb">
-    <label for="backgroundColor">Background Color:</label>
-    <input type="color" id="backgroundColorInput" name="backgroundColor" value="#111111">
-    <label for="file">3D Model:</label>
-    <input type="file" id="fileInput" name="file">
+    <div class="inputsRow">
+      <label for="foregroundColor">Foreground Color:</label>
+      <input type="color" id="foregroundColorInput" name="foregroundColor" value="#86cecb">
+      <label for="backgroundColor">Background Color:</label>
+      <input type="color" id="backgroundColorInput" name="backgroundColor" value="#111111">
+      <label for="file">3D Model:</label>
+      <input type="file" id="fileInput" name="file">
+    </div>
+    <div class="inputsRow">
+      <label for="verticalRotationAngle">Vertical Rotation Angle: </label>
+      <input type="number" id="vRotationAngleInput" name="verticalRotationAngle" value="90">
+     </div>
   </div>
-  <p></p>
+ 
   <canvas id="render"></canvas>
 </body>
 
