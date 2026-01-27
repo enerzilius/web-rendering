@@ -151,6 +151,16 @@ function rotation_xz(v, angle) {
   }
 }
 
+function rotation_y(v, angle) {
+  const cosine = Math.cos(angle);
+  const sine = Math.sin(angle);
+  return {
+    x: v.x*cosine-v.z*sine,
+    y: v.y,
+    z: -v.x*sine+v.z*cosine,
+  }
+}
+
 let d = { x: 0, y: 0, z: 2};
 let angle = 0;
 function drawFrame() {
@@ -163,8 +173,8 @@ function drawFrame() {
     for(let i = 0; i < f.length; i++) {
       const a = vertices[f[i]];
       const b = vertices[f[(i+1)%f.length]];
-      const point1 = normalizedToCanvas(project(translate(rotation_xz(a, angle), d)));
-      const point2 = normalizedToCanvas(project(translate(rotation_xz(b, angle), d)));
+      const point1 = normalizedToCanvas(project(translate(rotation_y(rotation_xz(a, angle), vRotationAngleInput.value), d)));
+      const point2 = normalizedToCanvas(project(translate(rotation_y(rotation_xz(b, angle), vRotationAngleInput.value), d)));
       if(Math.abs(point1) > 1.0 || Math.abs(point2) > 1.0) continue;
       drawLine(point1, point2);
     }
