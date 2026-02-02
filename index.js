@@ -50,9 +50,9 @@ function handleFileInput() {
 
 function processFileContent(reader) {
   const content = reader.result;
-  console.log(content);
+  //console.log(content);
   const lines = content.split("\n");
-  console.log(lines);
+  //console.log(lines);
 
   let vertexBuffer = [];
   let facesBuffer = [];
@@ -151,7 +151,7 @@ function rotation_xz(v, angle) {
   }
 }
 
-function rotation_y(v, angle) {  
+function rotation_y(v, angle) {
   const cosine = Math.cos(angle);
   const sine = Math.sin(angle);  
   return {                       
@@ -168,18 +168,20 @@ function drawFrame() {
   //d.z += dt;
   clear();
   angle += dt;
+  const verticalAngle = vRotationAngleInput.value;
 
   for(const f of faces) {
     for(let i = 0; i < f.length; i++) {
       const a = vertices[f[i]];
       const b = vertices[f[(i+1)%f.length]];
-      const point1 = normalizedToCanvas(project(translate(rotation_xz(rotation_y(a, vRotationAngleInput.value), angle), d)));
-      const point2 = normalizedToCanvas(project(translate(rotation_xz(rotation_y(b, vRotationAngleInput.value), angle), d)));
+      const point1 = normalizedToCanvas(project(translate(rotation_xz(rotation_y(a, verticalAngle), angle), d)));
+      const point2 = normalizedToCanvas(project(translate(rotation_xz(rotation_y(b, verticalAngle), angle), d)));
       drawLine(point1, point2);
     }
   }
   setTimeout(drawFrame, 1000/FPS);
 }
 
+vRotationAngleInput.addEventListener('change', () => console.log(vRotationAngleInput.value));
 fileInput.addEventListener('change', handleFileInput);
 drawFrame();
