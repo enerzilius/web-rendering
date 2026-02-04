@@ -30,10 +30,10 @@ input {
 }
 
 #fileInput {
-  width: 30%;
+  width: 11%;
 }
 
-#inoputsBox {
+#inputsBox {
   display: flex;
   flex-direction: column;
   align-items: center;
